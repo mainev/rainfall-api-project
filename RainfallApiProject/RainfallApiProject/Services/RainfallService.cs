@@ -11,7 +11,7 @@ namespace RainfallApiProject.Services
         /// <summary>
         /// Returns a list of all readings from a particular station using the public API
         /// </summary>
-        public async Task<RainfallReadingResponse> GetRainfallMeasuresAsync(int count, string stationId = "1491TH")
+        public async Task<RainfallReadingResponse> GetRainfallMeasuresAsync(int count, string stationId)
         {
 
             RainfallReadingResponse rainfallReadingResponse = new RainfallReadingResponse();
