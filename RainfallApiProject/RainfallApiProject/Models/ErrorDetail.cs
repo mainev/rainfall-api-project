@@ -3,6 +3,6 @@
     public class ErrorDetail
     {
         public string PropertyName { get; set; }
-        public decimal Message { get; set; }
+        public string Message { get; set; }
     }
 }

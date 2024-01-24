@@ -4,8 +4,8 @@ using RainfallApiProject.Services;
 var builder = WebApplication.CreateBuilder(args);
 var hostingEnv = builder.Environment;
 
-// Add services to the container.
-builder.Services.AddTransient<RainfallService>();
+// Services
+builder.Services.AddScoped<RainfallService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("1.0", new OpenApiInfo
     {
         Title = "Rainfall Api",
-        Version = "1.",
+        Version = "1.0",
         Contact = new OpenApiContact
         {
             Name = "Sorted",
@@ -23,7 +23,11 @@ builder.Services.AddSwaggerGen(c =>
         Description = "An API which provides rainfall reading data"
     });
 
+
     c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{hostingEnv.ApplicationName}.xml");
+
+    // This is added so all decimal data types will use the format=decimal in the OpenApi spec
+    c.MapType<decimal>(() => new OpenApiSchema { Type = "number", Format = "decimal" });
 });
 
 var app = builder.Build();
@@ -35,8 +39,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/1.0/swagger.json", "Rainfall Api");
-
-       
     });
 }
 

@@ -6,10 +6,9 @@ namespace RainfallApiProject.Services
 {
     public class RainfallService
     {
-
         public RainfallService() { }
 
-        public async Task<RainfallReadingResponse> GetRainfallMeasuresAsync(string stationId = "1491TH")
+        public async Task<RainfallReadingResponse> GetRainfallMeasuresAsync(int count, string stationId = "1491TH")
         {
 
             RainfallReadingResponse rainfallReadingResponse = new RainfallReadingResponse();
@@ -25,7 +24,7 @@ namespace RainfallApiProject.Services
 
             RainfallMeasure rainfallMeasure = JsonConvert.DeserializeObject<RainfallMeasure>(jsonResponse);
 
-            foreach (var item in rainfallMeasure.Items)
+            foreach (var item in rainfallMeasure.Items.Take(count))
             {
                 rainfallReadingResponse.Readings.Add(new RainfallReading
                 {
@@ -39,7 +38,7 @@ namespace RainfallApiProject.Services
 
         public class RainfallMeasure
         {
-            public List<RainfallMeasureItem> Items { get; set; }
+            public List<RainfallMeasureItem> Items { get; set; } = new List<RainfallMeasureItem>();
         }
 
         public class RainfallMeasureItem
