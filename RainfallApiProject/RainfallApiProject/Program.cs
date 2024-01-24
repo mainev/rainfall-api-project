@@ -23,6 +23,10 @@ builder.Services.AddSwaggerGen(c =>
         Description = "An API which provides rainfall reading data"
     });
 
+    c.AddServer(new OpenApiServer {
+        Url = "http://localhost:3000",
+        Description = "Operations relating to rainfall"
+    });
 
     c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{hostingEnv.ApplicationName}.xml");
 
@@ -42,9 +46,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 

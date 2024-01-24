@@ -34,11 +34,12 @@ namespace RainfallApiProject.Controllers
         [HttpGet]
         [Route("/rainfall/id/{stationId}/readings")]
         [SwaggerOperation("GetRainfall")]
+        [Tags("Rainfall")]
         [SwaggerResponse(statusCode: 200, type: typeof(RainfallReadingResponse), description: "A list of rainfall readings successfully retrieved")]
         [SwaggerResponse(statusCode: 400, type: typeof(Error), description: "Invalid request")]
         [SwaggerResponse(statusCode: 404, type: typeof(Error), description: "No readings found for the specified stationId")]
         [SwaggerResponse(statusCode: 500, type: typeof(Error), description: "Internal server error")]
-        public async Task<ActionResult> GetRainfall(string stationId, [FromQuery][Range(1, 100)] decimal count = 10)
+        public async Task<ActionResult> GetRainfall([FromRoute] string stationId, [FromQuery][Range(1, 100)] decimal count = 10)
         {
             try
             {
@@ -47,18 +48,21 @@ namespace RainfallApiProject.Controllers
                 if (!rainfallReadings.Readings.Any())
                     return StatusCode(StatusCodes.Status404NotFound, new Error { Message = "No readings found for the specified stationId" });
                 else
-                    return Ok(rainfallReadings);
+                    return StatusCode(StatusCodes.Status200OK, rainfallReadings);
 
             }
             catch (Exception ex)
             {
-
                 var error = new Error
                 {
                     Message = ex.Message,
+                    Detail = new List<ErrorDetail>
+                    {
+                        new ErrorDetail { Message = ex.InnerException?.Message }
+                    }
                 };
 
-                return StatusCode(500, error);
+                return StatusCode(StatusCodes.Status500InternalServerError, error);
             }
         }
     }
