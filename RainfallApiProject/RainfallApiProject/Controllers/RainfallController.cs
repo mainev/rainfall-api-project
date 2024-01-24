@@ -43,16 +43,34 @@ namespace RainfallApiProject.Controllers
         {
             try
             {
+                // 400
+                if (String.IsNullOrEmpty(stationId) || String.IsNullOrWhiteSpace(stationId))
+                {
+                    var error = new Error
+                    {
+                        Message = "Invalid request",
+                        Detail = new List<ErrorDetail> {
+                            new() { PropertyName = "stationId", Message = "stationId is invalid"}
+                        }
+                    };
+
+                    return StatusCode(StatusCodes.Status400BadRequest, error);
+                }
+
                 var rainfallReadings = await _rainfallService.GetRainfallMeasuresAsync((int)count, stationId);
 
+                // 404
                 if (!rainfallReadings.Readings.Any())
                     return StatusCode(StatusCodes.Status404NotFound, new Error { Message = "No readings found for the specified stationId" });
+                
+                // 200
                 else
                     return StatusCode(StatusCodes.Status200OK, rainfallReadings);
 
             }
             catch (Exception ex)
             {
+                // 500
                 var error = new Error
                 {
                     Message = ex.Message,

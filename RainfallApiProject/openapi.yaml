@@ -1,4 +1,4 @@
-openapi: 3.0.2
+openapi: 3.1.0
 info:
   title: Rainfall Api
   version: '1.0'
@@ -34,7 +34,8 @@ paths:
       operationId: get-rainfall
       summary: Get rainfall readings by station Id
       description: Retrieve the latest readings for the specified stationId
-      tags: [Rainfall]
+      tags:
+        - Rainfall
       responses:
         '200':
           description: A list of rainfall readings successfully retrieved
@@ -92,10 +93,8 @@ components:
         detail:
           type: array
           items:
-            type: array
-            items:
-              $ref: '#/components/schemas/errorDetail'
-          additionalProperties: false
+            $ref: '#/components/schemas/errorDetail'
+      additionalProperties: false 
     errorDetail:
       type: object
       description: Details of invalid request property
@@ -104,7 +103,7 @@ components:
           type: string
         message:
           type: string
-          additionalProperties: false
+      additionalProperties: false
   responses:
     rainfallReadingResponse:
         description: Get rainfall readings response

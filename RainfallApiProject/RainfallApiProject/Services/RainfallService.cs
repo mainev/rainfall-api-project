@@ -15,8 +15,7 @@ namespace RainfallApiProject.Services
         {
 
             RainfallReadingResponse rainfallReadingResponse = new RainfallReadingResponse();
-            string publicApiUrl = @$"http://environment.data.gov.uk/flood-monitoring/id/stations/{stationId}/measures";
-
+            string publicApiUrl = $"http://environment.data.gov.uk/flood-monitoring/id/stations/{stationId}/measures";
 
             using HttpClient httpClient = new HttpClient();
             try
@@ -48,20 +47,19 @@ namespace RainfallApiProject.Services
             {
                 throw new ApplicationException($"Error while deserializing JSON response: {ex.Message}", ex);
             }
-
         }
 
-        public class RainfallMeasure
+        class RainfallMeasure
         {
             public List<RainfallMeasureItem> Items { get; set; } = new List<RainfallMeasureItem>();
         }
 
-        public class RainfallMeasureItem
+        class RainfallMeasureItem
         {
             public LatestReading LatestReading { get; set; }
         }
 
-        public class LatestReading
+        class LatestReading
         {
             public string Date { get; set; }
             public DateTime DateTime { get; set; }
